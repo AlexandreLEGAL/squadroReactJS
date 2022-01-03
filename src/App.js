@@ -1,11 +1,11 @@
 import './App.css';
-import Game from './components/Game';
+import Squadro from './components/Squadro';
 function App() {
   const title = "Squadro ReactJS"
   return (
     <div className="App">
       <h1> {title} </h1>
-      <Game/>
+      <Squadro/>
     </div>
   );
 }

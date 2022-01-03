@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
-export const StyledGameWrapper = styled.div`
-    width: 100vw;
-    height: 100vh;
+export const StyledSquadroWrapper = styled.div`
+    width: 100%;
+    height: 100%;
     background: #O00;
     background-size: cover;
     overflow: hidden;
 `
 
-export const StyledGame = styled.div`
+export const StyledSquadro = styled.div`
     display: flex;
     align-items: flex-start;
     padding: 40px;

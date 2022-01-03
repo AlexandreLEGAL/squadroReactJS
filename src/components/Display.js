@@ -1,9 +1,9 @@
 import react from "react";
 import { StyledDisplay } from "./styles/StyledDisplay";
-const Display = ({gameOver, text}) => {
+const Display = ({gameOver, text, info}) => {
     return (
         <StyledDisplay gameOver={gameOver}>
-            {text}
+            {text}{info ? " = " + info : ""}
         </StyledDisplay>
     );
 }
