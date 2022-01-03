@@ -9,10 +9,10 @@ export const createStage = () => {
         stage[x].fill([1, 'empty'],0,1)
         stage[x].fill([1, 'empty'],stage.length-1)
     }
-    stage[0].fill([0, 'empty'], 0,1)
-    stage[0].fill([0, 'empty'], stage.length-1)
-    stage[stage.length-1].fill([0, 'empty'], 0,1)
-    stage[stage.length-1].fill([0, 'empty'], stage.length-1)
+    stage[0].fill(["V", 'empty'], 0,1)
+    stage[0].fill(["V", 'empty'], stage.length-1)
+    stage[stage.length-1].fill(["V", 'empty'], 0,1)
+    stage[stage.length-1].fill(["V", 'empty'], stage.length-1)
     return stage
 }
     
