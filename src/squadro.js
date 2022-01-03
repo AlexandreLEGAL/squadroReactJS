@@ -1,4 +1,7 @@
 export const SQUADRO = {
+    V: {
+        shape: [["V"]], color: "128, 128, 128" // Case VIDE (angles)
+    },
     0: {
         shape: [[0]], color: "128, 128, 128" // Case en croix
     },
