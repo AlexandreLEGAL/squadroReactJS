@@ -9,7 +9,7 @@ export const useStage = (player, blankStage, resetPlayer) => {
             //First flush the stage
             const newStage = prevStage.map(
                 (row, x)=> row.map(
-                    (cell, y) => (cell[1] === 'empty' ? [blankStage[x][y][0], 'empty'] : cell)
+                    (cell, y) => (cell[1] === 'empty' ? [blankStage[x][y][0], 'empty', blankStage[x][y][2]] : cell)
                 )
             )
 

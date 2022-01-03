@@ -1,13 +1,16 @@
 import react from "react";
 import { StyledCell } from "./styles/StyledCell";
 import { SQUADRO } from "../squadro";
+import { StyledPawn } from "./styles/StyledPawn";
 
 
-const Cell = ({ type }) => {
+const Cell = ({ type, pawn }) => {
 
     return ( 
         <StyledCell type={type} color={SQUADRO[type].color}>
-            {type === 0 ? 
+            {pawn ? <StyledPawn color={pawn}/> : ""}
+            
+            {/* {type === 0 ? 
         <svg viewBox="0 0 512 512">
 		<path d="M496.645,170.667H336.314V10.432C336.314,4.889,331.522,0,325.978,0H185.429c-5.544,0-9.743,4.889-9.743,10.432v160.234
 			H14.762c-5.544,0-9.743,4.889-9.743,10.432v140.549c0,5.544,4.199,9.646,9.743,9.646h160.924v171.06
@@ -25,7 +28,7 @@ const Cell = ({ type }) => {
 <svg viewBox="0 0 512 512">
 <rect x="168" y="8" width="176" height="496"/>
 </svg>
-: ""}
+: ""} */}
         </StyledCell>
      );
 }
