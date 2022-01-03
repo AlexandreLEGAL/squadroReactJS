@@ -15,6 +15,15 @@ export const SQUADRO = {
         shape: [["W"]], color: "256, 256, 256" // Curseur Joueur Noir
     }
 }
+
+export const PAWN = {
+    B:{
+        shape: [["B"]], color: "0, 0, 0", orientation: "H" // Orientation Horizontal
+    },
+    W:{
+        shape: [["W"]], color: "256, 256, 256", orientation: "V" // Orientation Vertical
+    },
+}
 export const squadroPiece = () => {
     const squadro = "BW"
     const randSquadro =
