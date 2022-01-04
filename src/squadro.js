@@ -21,10 +21,10 @@ export const SQUADRO = {
 
 export const PAWN = {
     B:{
-        shape: [["B"]], color: "0, 0, 0", orientation: "H" // Orientation Horizontal
+        shape: [["B"]], color: "0, 0, 0", direction: "H", step : 3 // Orientation Horizontal
     },
     W:{
-        shape: [["W"]], color: "256, 256, 256", orientation: "V" // Orientation Vertical
+        shape: [["W"]], color: "256, 256, 256", direction: "H", step: 3 // Orientation Vertical
     },
 }
 export const squadroPiece = () => {

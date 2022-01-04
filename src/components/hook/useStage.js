@@ -30,7 +30,6 @@ export const useStage = (player, blankStage, pawn, resetPawn, resetPlayer) => {
                 row.forEach((value, x) => {
                     if(value !== 0){
                         newStage[y + pawn.pos.y][x + pawn.pos.x][2] = value
-                        // console.log("pawn" ,newStage[y + pawn.pos.y][x + pawn.pos.x][0])
                     }
                 })
             })

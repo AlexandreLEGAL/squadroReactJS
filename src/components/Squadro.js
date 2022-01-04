@@ -35,19 +35,48 @@ const Game = () => {
         }
     }
 
-    const moveVerticalyPawn = dir => {
-        if(!checkPawnCollision(pawn, stage, {x:0, y:dir})){
-            updatePawnPos({x: 0, y:dir})
+    const moveVerticalyPawn = (step, direction) => {
+        let mouvement
+        if(direction === "H") {
+            mouvement = {x: step, y: 0}
         }
+        else if (direction === "V"){
+            mouvement = {x: 0, y: step}
+        }
+        if(JSON.stringify(pawn.pos) === JSON.stringify(player.pos)){
+            if(!checkPawnCollision(pawn, stage, mouvement)){
+                console.log("if")
+                updatePawnPos({x: mouvement.x, y:mouvement.y, step: step, go:pawn.go})
+            }
+            else{
+                console.log("else")
+                console.log("step",step)
+                console.log("!pawn.go", !pawn.go)
+                if(Math.sign(step) === 1){
+                    let mouvementInverted
+                    if(direction === "H") {
+                        mouvementInverted = {x: -(4-mouvement.x), y: mouvement.y} 
+                    }
+                    else if (direction === "V"){
+                        mouvementInverted = {x: mouvement.x, y: -(4-mouvement.y)} 
+                    }
+                    console.log("avant",pawn.go)
+                    updatePawnPos({x: mouvementInverted.x, y:mouvementInverted.y, step:-(4-step), go:!pawn.go})
+                    console.log("après",pawn.go)
+                }
+                else{
+                    console.log("Un pion a fait un aller-retour !")
+                }
+            }
+        }
+        console.log(pawn)
     }
 
     const startGame = () => {
         //Reset everything
         setStage(createStage())
         resetPlayer()
-        // console.log("player",player.pos)
         resetPawn()
-        // console.log("pawn",pawn.pos)
     }
 
     const move = ({ keyCode }) => {
@@ -61,10 +90,7 @@ const Game = () => {
             } else if (keyCode === 38) { // Up
                 moveVerticaly(-1)   
             } else if (keyCode === 65) { // a
-                moveVerticalyPawn(2)   
-            }
-            else if (keyCode === 90) { // z
-                moveVerticalyPawn(-2)   
+                moveVerticalyPawn(pawn.step, pawn.direction)
             }
         }
     }
