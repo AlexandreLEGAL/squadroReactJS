@@ -1,6 +1,6 @@
 import react, {useState} from 'react';
 
-import { createStage, checkCollision } from '../gameHelpers';
+import { createStage, checkPlayerCollision, checkPawnCollision } from '../gameHelpers';
 //Components
 import Stage from './Stage';
 import Display from './Display';
@@ -12,24 +12,32 @@ import { StyledSquadro, StyledSquadroWrapper } from './styles/StyledSquadro';
 
 import {usePlayer} from './hook/usePlayer';
 import {useStage} from './hook/useStage';
+import { usePawn } from './hook/usePawn';
 
 const Game = () => {
     const [turnTime, setTurnTime] = useState(null)
     const [gameOver, setGameOver] = useState(false)
 
     const [player, updatePlayerPos, resetPlayer] = usePlayer()
-    const [stage, setStage] = useStage(player, createStage())
+    const [pawn, updatePawnPos, resetPawn] = usePawn()
+    const [stage, setStage] = useStage(player, createStage(), pawn)
     console.log('re-render')
 
     const movePlayer = dir => {
-        if(!checkCollision(player, stage, {x:dir, y:0})){
+        if(!checkPlayerCollision(player, stage, {x:dir, y:0})){
             updatePlayerPos({x: dir, y:0})
         }
     }
 
     const moveVerticaly = dir => {
-        if(!checkCollision(player, stage, {x:0, y:dir})){
+        if(!checkPlayerCollision(player, stage, {x:0, y:dir})){
             updatePlayerPos({x: 0, y:dir})
+        }
+    }
+
+    const moveVerticalyPawn = dir => {
+        if(!checkPawnCollision(pawn, stage, {x:0, y:dir})){
+            updatePawnPos({x: 0, y:dir})
         }
     }
 
@@ -37,6 +45,9 @@ const Game = () => {
         //Reset everything
         setStage(createStage())
         resetPlayer()
+        // console.log("player",player.pos)
+        resetPawn()
+        // console.log("pawn",pawn.pos)
     }
 
     const move = ({ keyCode }) => {
@@ -49,6 +60,11 @@ const Game = () => {
                 moveVerticaly(1)   
             } else if (keyCode === 38) { // Up
                 moveVerticaly(-1)   
+            } else if (keyCode === 65) { // a
+                moveVerticalyPawn(2)   
+            }
+            else if (keyCode === 90) { // z
+                moveVerticalyPawn(-2)   
             }
         }
     }
