@@ -63,7 +63,7 @@ const Squadro = () => {
     // }
 
     const moveVerticalyPawn = (step, direction, p, update) => {
-        console.log("p", p)
+        // console.log("p", p)
         let mouvement
         if(direction === "H") {
             mouvement = {x: step, y: 0}
@@ -74,7 +74,7 @@ const Squadro = () => {
         const collision = checkPawnCollision(p, stage, mouvement)
         // if(JSON.stringify(pawn.pos) === JSON.stringify(player.pos)){
             if(!collision.collision){
-                console.log("if")
+                // console.log("if")
                 update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
             }
             else{
@@ -95,7 +95,6 @@ const Squadro = () => {
                     while(i!==0 && !possible){ // On détermine le mouvement le plus grand possible
                         if(Math.sign(step) === 1){ // - si aller + si retour
                             i--
-                            console.log("-1")
                         }
                         else{
                             i++
@@ -109,14 +108,14 @@ const Squadro = () => {
                         }
                         
                         possible = !checkPawnCollision(p, stage, mv).mur
-                        console.log("possible",i!==0 && !possible, i, !possible)
+                        // console.log("possible",i!==0 && !possible, i, !possible)
                         
                     }
-                    {console.log(i)
+                    {
                     if(i !== 0)
                         mouvement = mv
                     }
-                    console.log("Meilleur mouvement possible pour se rapprocher au maximum", mouvement, mv)
+                    console.log("Meilleur mouvement possible pour se rapprocher au maximum", mv)
 
                     if(Math.sign(step) === 1){ // SI c'est un aller 
                         if( i === 0){ // Et qu'on est au bord du stage
@@ -172,25 +171,8 @@ const Squadro = () => {
         resetPawns()
     }
 
-    const move = ({ keyCode }) => {
-        if(!gameOver){
-            // if(keyCode === 37){ //Left
-            //     movePlayer(-1)
-            // } else if (keyCode === 39) { // Rigth
-            //     movePlayer(1)
-            // } else if (keyCode === 40) { // Down
-            //     moveVerticaly(1)   
-            // } else if (keyCode === 38) { // Up
-            //     moveVerticaly(-1)   
-            // } 
-            if (keyCode === 65) { // a
-                moveVerticalyPawn(pawn.step, pawn.direction)
-            }
-        }
-    }
-
     return (  
-        <StyledSquadroWrapper role="button" tabIndex={0} onKeyDown={e => move(e)}>
+        <StyledSquadroWrapper role="button" tabIndex={0}>
             <StyledSquadro>
                 <Stage stage={stage} pawns={pawnPlayer1} moveVerticalyPawn={moveVerticalyPawn}/>
                 <aside>

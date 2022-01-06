@@ -13,7 +13,7 @@ const Stage = (props) => {
             props.pawns.forEach(pawn => {
                 if(JSON.stringify(pawn[0].pos) === JSON.stringify({x: x, y: y })){
                     i = props.pawns.indexOf(pawn)
-                    console.log(props.pawns.indexOf(pawn), {x: x, y: y })
+                    // console.log(props.pawns.indexOf(pawn), {x: x, y: y })
                 }
             })
         }
