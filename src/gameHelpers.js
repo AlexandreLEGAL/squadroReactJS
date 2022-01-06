@@ -40,7 +40,7 @@ export const checkPlayerCollision = (player, stage, {x: moveX, y: moveY}) => {
 }
 
 export const checkPawnCollision = (pawn, stage, {x: moveX, y: moveY}) => {
-    console.log('x', moveX, 'y', moveY)
+    // console.log('x', moveX, 'y', moveY)
     for(let y = 0; y < pawn.pawn.length; y += 1){
         for (let x = 0; x < pawn.pawn[y].length; x += 1){
             // Check that we're on an actual Squadro cell
@@ -55,10 +55,11 @@ export const checkPawnCollision = (pawn, stage, {x: moveX, y: moveY}) => {
                 // stage[y + pawn.pos.y + moveY] [x + pawn.pos.x + moveX][1] !== 'empty' // Collision avec les blocs
                 ) 
                 {
-                    console.log("Collision detected")
-                    return true
+                    // console.log("Collision detected")
+                    return {collision:true, mur:true}
                 }
             }
         }
     }
+    return {collision:false, mur:false}
 }

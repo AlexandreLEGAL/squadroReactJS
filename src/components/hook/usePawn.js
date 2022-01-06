@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 import { PAWN } from "../../squadro";
 
-export const usePawn = () => {
+export const usePawn = ({position}) => {
     const [pawn, setPawn] = useState({
-        pos: {x: 1, y:0},
+        pos: {x: 3, y:0},
         pawn: PAWN["W"].shape,
         collided: false,
         direction: PAWN["W"].direction,
@@ -20,20 +20,20 @@ export const usePawn = () => {
             step,
             go
         }))
-        console.log(go)
+        // console.log(go)
     }
 
     const resetPawn = useCallback(
         () => {
             setPawn({
-                pos:{x: 1, y: 0},
+                pos:{x: 3, y: 0},
                 pawn: PAWN["W"].shape,
                 collided: false,
                 direction: PAWN["W"].direction,
                 step: PAWN["W"].step,
-                go:true
+                go:false
             })
-            console.log(pawn.go)
+            // console.log(pawn.go)
         },
         [],
     )

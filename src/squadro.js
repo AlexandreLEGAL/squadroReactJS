@@ -24,7 +24,7 @@ export const PAWN = {
         shape: [["B"]], color: "0, 0, 0", direction: "H", step : 3 // Orientation Horizontal
     },
     W:{
-        shape: [["W"]], color: "256, 256, 256", direction: "H", step: 3 // Orientation Vertical
+        shape: [["W"]], color: "256, 256, 256", direction: "H", step: 2 // Orientation Vertical
     },
 }
 export const squadroPiece = () => {
