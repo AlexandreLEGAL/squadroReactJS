@@ -3,7 +3,7 @@ import { PAWN } from "../../squadro";
 
 export const usePawn = ({position}) => {
     const [pawn, setPawn] = useState({
-        pos: {x: 3, y:0},
+        pos: {x: 5, y:0},
         pawn: PAWN["W"].shape,
         collided: false,
         direction: PAWN["W"].direction,
@@ -26,7 +26,7 @@ export const usePawn = ({position}) => {
     const resetPawn = useCallback(
         () => {
             setPawn({
-                pos:{x: 3, y: 0},
+                pos:{x: 5, y: 0},
                 pawn: PAWN["W"].shape,
                 collided: false,
                 direction: PAWN["W"].direction,

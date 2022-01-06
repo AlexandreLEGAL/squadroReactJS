@@ -10,18 +10,20 @@ import { StyledSquadro, StyledSquadroWrapper } from './styles/StyledSquadro';
 
 //Custom Hooks
 
-import {usePlayer} from './hook/usePlayer';
+// import {usePlayer} from './hook/usePlayer';
 import {useStage} from './hook/useStage';
 import { usePawn } from './hook/usePawn';
 
-const Game = () => {
+const Squadro = () => {
     const [turnTime, setTurnTime] = useState(null)
     const [gameOver, setGameOver] = useState(false)
 
-    const [player, updatePlayerPos, resetPlayer] = usePlayer()
+    // const [player, updatePlayerPos, resetPlayer] = usePlayer()
     const [pawn, updatePawnPos, resetPawn] = usePawn({position:{x:1, y:0}})
     const [pawn1, updatePawnPos1, resetPawn1] = usePawn({position:{x:2, y:0}})
-    const [stage, setStage] = useStage(player, createStage(), pawn)
+    const [stage, setStage] = useStage(
+        // player,
+         createStage(), pawn)
     console.log('re-render')
 
     // const movePlayer = dir => {
@@ -63,10 +65,18 @@ const Game = () => {
                         mouvement = {x: 0, y: step}
                     }
 
-                    let i = step-1 // Nombre de pas max possible
+                    let i = step // Nombre de pas max possible
                     let possible = false // Pas de collision ?
                     let mv = {x: 0, y: 0}
                     while(i!==0 && !possible){ // On détermine le mouvement le plus grand possible
+                        if(Math.sign(step) === 1){ // - si aller + si retour
+                            i--
+                            console.log("-1")
+                        }
+                        else{
+                            i++
+                        }
+
                         if(h){
                             mv.x = i
                         }
@@ -75,14 +85,8 @@ const Game = () => {
                         }
                         
                         possible = !checkPawnCollision(pawn, stage, mv).mur
-                        console.log("possible",i!==0 && !possible, i)
-
-                        if(Math.sign(step) === 1){ // - si aller + si retour
-                            i--
-                        }
-                        else{
-                            i++
-                        }
+                        console.log("possible",i!==0 && !possible, i, !possible)
+                        
                     }
                     {console.log(i)
                     if(i !== 0)
@@ -129,7 +133,7 @@ const Game = () => {
     const startGame = () => {
         //Reset everything
         setStage(createStage())
-        resetPlayer()
+        // resetPlayer()
         resetPawn()
     }
 
@@ -163,7 +167,7 @@ const Game = () => {
                         : 
                     (
                     <div>
-                        <Display text="Turn" info={player.squadro}/>
+                        <Display text="Turn" info={"player.squadro"}/>
                     </div>
                     )}
                     <Start callback={startGame}/>
@@ -173,4 +177,4 @@ const Game = () => {
     );
 }
  
-export default Game;
+export default Squadro;
