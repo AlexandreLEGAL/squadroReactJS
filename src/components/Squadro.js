@@ -19,11 +19,35 @@ const Squadro = () => {
     const [gameOver, setGameOver] = useState(false)
 
     // const [player, updatePlayerPos, resetPlayer] = usePlayer()
-    const [pawn, updatePawnPos, resetPawn] = usePawn({position:{x:1, y:0}})
-    const [pawn1, updatePawnPos1, resetPawn1] = usePawn({position:{x:2, y:0}})
+
+    const [pawn,    updatePawnPos,      resetPawn]    = usePawn({color:"B"}, {number:1}) // Couleur, numero
+    const [pawn1,   updatePawnPos1,     resetPawn1]   = usePawn({color:"B"}, {number:2})
+    const [pawn2,   updatePawnPos2,     resetPawn2]   = usePawn({color:"B"}, {number:3})
+    const [pawn3,   updatePawnPos3,     resetPawn3]   = usePawn({color:"B"}, {number:4})
+    const [pawn4,   updatePawnPos4,     resetPawn4]   = usePawn({color:"B"}, {number:5})
+    const [pawn5,   updatePawnPos5,     resetPawn5]   = usePawn({color:"W"}, {number:1})
+    const [pawn6,   updatePawnPos6,     resetPawn6]   = usePawn({color:"W"}, {number:2})
+    const [pawn7,   updatePawnPos7,     resetPawn7]   = usePawn({color:"W"}, {number:3})
+    const [pawn8,   updatePawnPos8,     resetPawn8]   = usePawn({color:"W"}, {number:4})
+    const [pawn9,   updatePawnPos9,     resetPawn9]   = usePawn({color:"W"}, {number:5})
+    
+    const pawnPlayer1 = [].concat(
+        [[pawn, updatePawnPos, resetPawn]],
+        [[pawn1, updatePawnPos1, resetPawn1]],
+        [[pawn2, updatePawnPos2, resetPawn2]],
+        [[pawn3, updatePawnPos3, resetPawn3]],
+        [[pawn4, updatePawnPos4, resetPawn4]],
+        [[pawn5, updatePawnPos5, resetPawn5]],
+        [[pawn6, updatePawnPos6, resetPawn6]],
+        [[pawn7, updatePawnPos7, resetPawn7]],
+        [[pawn8, updatePawnPos8, resetPawn8]],
+        [[pawn9, updatePawnPos9, resetPawn9]],
+        
+        )
     const [stage, setStage] = useStage(
         // player,
-         createStage(), pawn)
+        pawnPlayer1,
+         createStage(), )
     console.log('re-render')
 
     // const movePlayer = dir => {
@@ -38,8 +62,8 @@ const Squadro = () => {
     //     }
     // }
 
-    const moveVerticalyPawn = (step, direction) => {
-        
+    const moveVerticalyPawn = (step, direction, p, update) => {
+        console.log("p", p)
         let mouvement
         if(direction === "H") {
             mouvement = {x: step, y: 0}
@@ -47,11 +71,11 @@ const Squadro = () => {
         else if (direction === "V"){
             mouvement = {x: 0, y: step}
         }
-        const collision = checkPawnCollision(pawn, stage, mouvement)
+        const collision = checkPawnCollision(p, stage, mouvement)
         // if(JSON.stringify(pawn.pos) === JSON.stringify(player.pos)){
             if(!collision.collision){
-                // console.log("if")
-                updatePawnPos({x: mouvement.x, y:mouvement.y, step: step, go:pawn.go})
+                console.log("if")
+                update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
             }
             else{
                 // SI c'est un mur aller le plus loin possible
@@ -84,7 +108,7 @@ const Squadro = () => {
                             mv.y = i
                         }
                         
-                        possible = !checkPawnCollision(pawn, stage, mv).mur
+                        possible = !checkPawnCollision(p, stage, mv).mur
                         console.log("possible",i!==0 && !possible, i, !possible)
                         
                     }
@@ -106,15 +130,15 @@ const Squadro = () => {
                             // console.log("avant",pawn.go)
                             // moveVerticalyPawn(step, direction)
                             step = -(4-step) // On se retourne
-                            pawn.go = !pawn.go
+                            p.go = !p.go
                             // updatePawnPos({x: mouvementInverted.x, y:mouvementInverted.y, step:, go:!pawn.go})
                             // console.log("après",pawn.go)
                         }
-                        updatePawnPos({x: mouvement.x, y:mouvement.y, step: step, go:pawn.go})
+                        update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
                     }
                     else if (Math.sign(step) === -1 && possible === true){ // Si on arrive vers un mur et que c'est le retour alors on marque 1 point
                         // console.log("Marque 1 point !")
-                        updatePawnPos({x: mv.x, y:mv.y, step: step, go:pawn.go})
+                        update({x: mv.x, y:mv.y, step: step, go:p.go})
                     }
                 }
                 // console.log("else")
@@ -123,18 +147,29 @@ const Squadro = () => {
                  
             // }
         }
-        const nextpos = {x: pawn.pos.x + mouvement.x, y: pawn.pos.y + mouvement.y}
-        if(JSON.stringify(nextpos) === JSON.stringify({x:0, y:0}) && pawn.go === false){
+        const nextpos = {x: p.pos.x + mouvement.x, y: p.pos.y + mouvement.y}
+        if(JSON.stringify(nextpos) === JSON.stringify({x:0, y:0}) && p.go === false){
             console.log("Marque 1 point !")
         }
         // console.log(pawn)
     }
-
+    const resetPawns = () => {
+        resetPawn()
+        resetPawn1()
+        resetPawn2()
+        resetPawn3()
+        resetPawn4()
+        resetPawn5()
+        resetPawn6()
+        resetPawn7()
+        resetPawn8()
+        resetPawn9()
+    }
     const startGame = () => {
         //Reset everything
         setStage(createStage())
         // resetPlayer()
-        resetPawn()
+        resetPawns()
     }
 
     const move = ({ keyCode }) => {
@@ -153,14 +188,11 @@ const Squadro = () => {
             }
         }
     }
-    const f = () =>{
-        console.log("test")
-    }
 
     return (  
         <StyledSquadroWrapper role="button" tabIndex={0} onKeyDown={e => move(e)}>
             <StyledSquadro>
-                <Stage stage={stage} pawn={pawn} moveVerticalyPawn={moveVerticalyPawn} f={f}/>
+                <Stage stage={stage} pawns={pawnPlayer1} moveVerticalyPawn={moveVerticalyPawn}/>
                 <aside>
                     {gameOver ? (
                         <Display gameOver={gameOver} text="Game Over"/>)

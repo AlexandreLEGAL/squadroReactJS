@@ -7,10 +7,16 @@ import { StyledPawn } from "./styles/StyledPawn";
 const Cell = (props) => {
     // console.log(props)
     let res
-    {props.pawn ? 
-        res = <StyledCell role="button" onClick={() => {props.moveVerticalyPawn(props.step, props.direction)}} type={props.type} color={SQUADRO[props.type].color} ><StyledPawn color={props.pawn}/></StyledCell>
-    :       
+    {if (props.pawn){
+        res =   <StyledCell role="button" onClick={() => {
+                    props.moveVerticalyPawn(props.pawns[props.i][0].step, props.pawns[props.i][0].direction, props.pawns[props.i][0], props.pawns[props.i][1])}}
+                    type={props.type} 
+                    color={SQUADRO[props.type].color} >
+
+                <StyledPawn color={props.pawn}/></StyledCell>
+    }else{
         res = <StyledCell type={props.type} color={SQUADRO[props.type].color}></StyledCell>}
+    }
     return (res)
 //         {pawn ?
 //             <StyledCell ><StyledPawn color={pawn}/> :</StyledCell>

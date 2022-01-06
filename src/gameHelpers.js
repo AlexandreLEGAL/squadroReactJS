@@ -4,7 +4,7 @@ export const STAGE_HEIGHT = 7;
 export const createStage = () => {
     const stage = Array.from(Array(STAGE_HEIGHT), () => new Array(STAGE_WIDTH).fill([0, 'empty', null]))
     stage[0].fill([2, 'empty', null])
-    stage[stage.length-1].fill([2, 'empty'])
+    stage[stage.length-1].fill([2, 'empty', null])
     for(let x = 0; x < stage.length ; x++){
         stage[x].fill([1, 'empty', null],0,1)
         stage[x].fill([1, 'empty', null],stage.length-1)

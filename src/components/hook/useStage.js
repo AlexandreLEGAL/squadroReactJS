@@ -3,10 +3,10 @@ import { createStage } from "../../gameHelpers";
 
 export const useStage = (
     // player, 
-    blankStage, pawn, resetPawn, resetPlayer) => {
+    pawn, blankStage, resetPawn, resetPlayer) => {
     const [stage, setStage] = useState(createStage())
 
-    useEffect(()=>{
+    useEffect(()=>{ 
         const updateStage = prevStage =>{
             //First flush the stage
             const newStage = prevStage.map(
@@ -14,41 +14,37 @@ export const useStage = (
                     (cell, y) => (cell[1] === 'empty' ? [blankStage[x][y][0], 'empty', blankStage[x][y][2]] : cell)
                 )
             )
-
-            // Then draw the cursor
-            // player.squadro.forEach((row, y) => {
+            // pawn[0].pawn.forEach((row, y) => {
             //     row.forEach((value, x) => {
             //         if(value !== 0){
-            //             newStage[y + player.pos.y][x + player.pos.x] = [ // Cursor
-            //                 value,
-            //                 `${player.collided ? 'merged' : 'empty'}`,
-            //                 null
-            //             ]
+            //             newStage[y + pawn.pos.y][x + pawn.pos.x][2] = value
             //         }
             //     })
             // })
-            // Then draw the pawns
-            pawn.pawn.forEach((row, y) => {
-                row.forEach((value, x) => {
-                    if(value !== 0){
-                        newStage[y + pawn.pos.y][x + pawn.pos.x][2] = value
-                    }
+
+            pawn.forEach((onePawn) => {
+                onePawn[0].pawn.forEach((row, y) => {
+                    row.forEach((value, x) => {
+                        if(value !== 0){
+                            newStage[y + onePawn[0].pos.y][x + onePawn[0].pos.x][2] = value
+                        }
+                    })
                 })
             })
             // Then check if we collided
             // if(player.collided) {
             //     resetPlayer()
             // }
-            if(pawn.collided) {
+            
+            if(pawn[0].collided) {
                 resetPawn()
             }
             return newStage
         }
 
         setStage(prev =>updateStage(prev))
-    }, [
-        // player, resetPlayer, 
-        pawn, resetPawn])
+    }, pawn.map((x) => { return x[0] })
+    )
     return [stage, setStage];
 }
 

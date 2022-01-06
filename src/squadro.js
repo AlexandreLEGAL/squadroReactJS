@@ -21,10 +21,51 @@ export const SQUADRO = {
 
 export const PAWN = {
     B:{
-        shape: [["B"]], color: "0, 0, 0", direction: "H", step : 3 // Orientation Horizontal
+        shape: [["B"]], color: "0, 0, 0", direction: "H", 
+        1:{
+            step : 3,
+            pos : {x:0, y:1}
+        },
+        2:{
+            step : 1,
+            pos : {x:0, y:2}
+        },
+        3:{
+            step : 2,
+            pos : {x:0, y:3}
+        },
+        4:{
+            step : 1,
+            pos : {x:0, y:4}
+        },
+        5:{
+            step : 3,
+            pos : {x:0, y:5}
+        }
+        
     },
     W:{
-        shape: [["W"]], color: "256, 256, 256", direction: "H", step: 2 // Orientation Vertical
+        shape: [["W"]], color: "256, 256, 256", direction: "V", 
+        1:{
+            step : 1,
+            pos : {x:1, y:0}
+        },
+        2:{
+            step : 3,
+            pos : {x:2, y:0}
+        },
+        3:{
+            step : 2,
+            pos : {x:3, y:0}
+        },
+        4:{
+            step : 3,
+            pos : {x:4, y:0}
+        },
+        5:{
+            step : 1,
+            pos : {x:5, y:0}
+        }
     },
 }
 export const squadroPiece = () => {
