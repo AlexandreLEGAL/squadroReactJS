@@ -12,21 +12,17 @@ export const usePawn = ({color},{number}) => {
         
     })
     const updatePawnPos = ({x,y,collided, step, go}) => {
-        console.log("upd to", PAWN[color][number].pos)
         setPawn(prev => ({
             ...prev,
             pos: {x:(prev.pos.x += x/2), y:(prev.pos.y += y/2)},
             collided,
             direction: PAWN[color].direction,
             step,
-            go
+            go: go
         }))
-        console.log("upd to", PAWN[color][number].pos)
-        // console.log(go)
     }
 
     const resetPawn = () => {
-        console.log("reset to", PAWN[color][number].pos)
             setPawn({
                 pos: {...PAWN[color][number].pos},
                 pawn: PAWN[color].shape,
@@ -38,9 +34,8 @@ export const usePawn = ({color},{number}) => {
         }
     const goBack = () => {
         let position = {...PAWN[color][number].pos}
-        if(pawn.go){
-        }
-        else{
+        console.log("goBack", pawn)
+        if(!pawn.go){
             if(pawn.direction === "H"){
                 position.x = 6
             }

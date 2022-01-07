@@ -24,7 +24,7 @@ export const PAWN = {
         shape: [["B"]], color: "0, 0, 0", direction: "H", 
         1:{
             step : 3,
-            pos : {x:1, y:1}
+            pos : {x:0, y:1}
         },
         2:{
             step : 1,

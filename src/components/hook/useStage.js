@@ -21,12 +21,15 @@ export const useStage = (
             //         }
             //     })
             // })
-
+            let i = 0
             pawn.forEach((onePawn) => {
                 onePawn[0].pawn.forEach((row, y) => {
                     row.forEach((value, x) => {
+                        i++
                         if(value !== 0){
                             newStage[y + onePawn[0].pos.y][x + onePawn[0].pos.x][2] = value
+                            newStage[y + onePawn[0].pos.y][x + onePawn[0].pos.x][3] = i
+                            // console.log("test", newStage[y + onePawn[0].pos.y][x + onePawn[0].pos.x])
                         }
                     })
                 })

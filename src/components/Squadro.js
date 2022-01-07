@@ -102,16 +102,29 @@ const Squadro = () => {
             else{
                 i--
             }
-
+            
             if(h){
                 mv.x = i
+                if(Math.sign(step) === 1){
+                    pawnPlayer1[stage[p.pos.y + mv.y][p.pos.x + mv.x-1][3]-1][3]()
+                }
+                else{
+                    pawnPlayer1[stage[p.pos.y + mv.y][p.pos.x + mv.x+1][3]-1][3]()
+                    
+                }
             }
             else{
                 mv.y = i
+                if(Math.sign(step) === 1){
+                    pawnPlayer1[stage[p.pos.y + mv.y-1][p.pos.x + mv.x][3]-1][3]()
+                }
+                else{
+                    pawnPlayer1[stage[p.pos.y + mv.y+1][p.pos.x + mv.x][3]-1][3]()
+                }
             }
             
+            
             possible = !checkPawnCollision(p, stage, mv).collision
-            // console.log("possible",i!==0 && !possible, i, !possible)
             
         }
         
@@ -245,23 +258,12 @@ const Squadro = () => {
         resetPawn8()
         resetPawn9()
     }
-    const goBackAll = () =>{
-        goBack()
-        goBack1()
-        goBack2()
-        goBack3()
-        goBack4()
-        goBack5()
-        goBack6()
-        goBack7()
-        goBack8()
-        goBack9()
-    }
+
     const startGame = () => {
         //Reset everything
         setStage(createStage())
         // resetPlayer()
-        goBackAll()
+        resetPawns()
     }
 
     return (  
@@ -275,6 +277,8 @@ const Squadro = () => {
                     (
                     <div>
                         <Display text="Turn" info={"player.squadro"}/>
+                        <Display text="Score joueur 1" info={"player1.score"}/>
+                        <Display text="Score joueur 2" info={"player2.score"}/>
                     </div>
                     )}
                     <Start callback={startGame}/>
