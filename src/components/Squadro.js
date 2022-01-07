@@ -20,30 +20,30 @@ const Squadro = () => {
 
     // const [player, updatePlayerPos, resetPlayer] = usePlayer()
 
-    const [pawn,    updatePawnPos,      resetPawn]    = usePawn({color:"B"}, {number:1}) // Couleur, numero
-    const [pawn1,   updatePawnPos1,     resetPawn1]   = usePawn({color:"B"}, {number:2})
-    const [pawn2,   updatePawnPos2,     resetPawn2]   = usePawn({color:"B"}, {number:3})
-    const [pawn3,   updatePawnPos3,     resetPawn3]   = usePawn({color:"B"}, {number:4})
-    const [pawn4,   updatePawnPos4,     resetPawn4]   = usePawn({color:"B"}, {number:5})
+    const [pawn,    updatePawnPos,      resetPawn,      goBack]    = usePawn({color:"B"}, {number:1}) // Couleur, numero
+    const [pawn1,   updatePawnPos1,     resetPawn1,     goBack1]   = usePawn({color:"B"}, {number:2})
+    const [pawn2,   updatePawnPos2,     resetPawn2,     goBack2]   = usePawn({color:"B"}, {number:3})
+    const [pawn3,   updatePawnPos3,     resetPawn3,     goBack3]   = usePawn({color:"B"}, {number:4})
+    const [pawn4,   updatePawnPos4,     resetPawn4,     goBack4]   = usePawn({color:"B"}, {number:5})
     
-    const [pawn5,   updatePawnPos5,     resetPawn5]   = usePawn({color:"W"}, {number:1})
-    const [pawn6,   updatePawnPos6,     resetPawn6]   = usePawn({color:"W"}, {number:2})
-    const [pawn7,   updatePawnPos7,     resetPawn7]   = usePawn({color:"W"}, {number:3})
-    const [pawn8,   updatePawnPos8,     resetPawn8]   = usePawn({color:"W"}, {number:4})
-    const [pawn9,   updatePawnPos9,     resetPawn9]   = usePawn({color:"W"}, {number:5})
+    const [pawn5,   updatePawnPos5,     resetPawn5,     goBack5]   = usePawn({color:"W"}, {number:1})
+    const [pawn6,   updatePawnPos6,     resetPawn6,     goBack6]   = usePawn({color:"W"}, {number:2})
+    const [pawn7,   updatePawnPos7,     resetPawn7,     goBack7]   = usePawn({color:"W"}, {number:3})
+    const [pawn8,   updatePawnPos8,     resetPawn8,     goBack8]   = usePawn({color:"W"}, {number:4})
+    const [pawn9,   updatePawnPos9,     resetPawn9,     goBack9]   = usePawn({color:"W"}, {number:5})
     
     const pawnPlayer1 = [].concat(
-        [[pawn, updatePawnPos, resetPawn]],
-        [[pawn1, updatePawnPos1, resetPawn1]],
-        [[pawn2, updatePawnPos2, resetPawn2]],
-        [[pawn3, updatePawnPos3, resetPawn3]],
-        [[pawn4, updatePawnPos4, resetPawn4]],
+        [[pawn, updatePawnPos, resetPawn,       goBack]],
+        [[pawn1, updatePawnPos1, resetPawn1,    goBack1]],
+        [[pawn2, updatePawnPos2, resetPawn2,    goBack2]],
+        [[pawn3, updatePawnPos3, resetPawn3,    goBack3]],
+        [[pawn4, updatePawnPos4, resetPawn4,    goBack4]],
 
-        [[pawn5, updatePawnPos5, resetPawn5]],
-        [[pawn6, updatePawnPos6, resetPawn6]],
-        [[pawn7, updatePawnPos7, resetPawn7]],
-        [[pawn8, updatePawnPos8, resetPawn8]],
-        [[pawn9, updatePawnPos9, resetPawn9]],
+        [[pawn5, updatePawnPos5, resetPawn5,    goBack5]],
+        [[pawn6, updatePawnPos6, resetPawn6,    goBack6]],
+        [[pawn7, updatePawnPos7, resetPawn7,    goBack7]],
+        [[pawn8, updatePawnPos8, resetPawn8,    goBack8]],
+        [[pawn9, updatePawnPos9, resetPawn9,    goBack9]],
         
         )
     const [stage, setStage] = useStage(
@@ -147,7 +147,7 @@ const Squadro = () => {
                 
             }
             turnStep = --k
-            console.log(turnStep)
+            // console.log(turnStep)
         }
         else{
             let k = -1
@@ -164,7 +164,7 @@ const Squadro = () => {
                 k--
             }
             turnStep = ++k
-            console.log(turnStep)
+            // console.log(turnStep)
         }
         console.log("col", col)
         const collision = col
@@ -245,11 +245,23 @@ const Squadro = () => {
         resetPawn8()
         resetPawn9()
     }
+    const goBackAll = () =>{
+        goBack()
+        goBack1()
+        goBack2()
+        goBack3()
+        goBack4()
+        goBack5()
+        goBack6()
+        goBack7()
+        goBack8()
+        goBack9()
+    }
     const startGame = () => {
         //Reset everything
         setStage(createStage())
         // resetPlayer()
-        resetPawns()
+        goBackAll()
     }
 
     return (  

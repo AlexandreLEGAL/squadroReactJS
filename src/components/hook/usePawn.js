@@ -3,7 +3,7 @@ import { PAWN } from "../../squadro";
 
 export const usePawn = ({color},{number}) => {
     const [pawn, setPawn] = useState({
-        pos: PAWN[color][number].pos,
+        pos: {...PAWN[color][number].pos}, // Créer une copie pour ne pas modifié la valeur dans PAWN
         pawn: PAWN[color].shape,
         collided: false,
         direction: PAWN[color].direction,
@@ -28,7 +28,7 @@ export const usePawn = ({color},{number}) => {
     const resetPawn = () => {
         console.log("reset to", PAWN[color][number].pos)
             setPawn({
-                pos:PAWN[color][number].pos,
+                pos: {...PAWN[color][number].pos},
                 pawn: PAWN[color].shape,
                 collided: false,
                 direction: PAWN[color].direction,
@@ -36,5 +36,22 @@ export const usePawn = ({color},{number}) => {
                 go:false
             })
         }
-    return [pawn, updatePawnPos, resetPawn];
+    const goBack = () => {
+        let position = {...PAWN[color][number].pos}
+        if(pawn.go){
+        }
+        else{
+            if(pawn.direction === "H"){
+                position.x = 6
+            }
+            else{
+                position.y = 6
+            }
+        }
+        setPawn(prev => ({
+            ...prev,
+            pos: position,
+        }))
+    }
+    return [pawn, updatePawnPos, resetPawn, goBack];
 }
