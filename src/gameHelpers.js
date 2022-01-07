@@ -41,10 +41,12 @@ export const checkPlayerCollision = (player, stage, {x: moveX, y: moveY}) => {
 
 export const checkPawnCollision = (pawn, stage, {x: moveX, y: moveY}) => {
     // console.log('x', moveX, 'y', moveY)
+    const res = {collision:false, mur:false, pawn: false}
     for(let y = 0; y < pawn.pawn.length; y += 1){
         for (let x = 0; x < pawn.pawn[y].length; x += 1){
             // Check that we're on an actual Squadro cell
             if (pawn.pawn[y][x] !== 0) {
+                // console.log(stage[y + pawn.pos.y + moveY][pawn.pos.x])
                 if(
                 // Check that our move is inside the game areas height (y)
                 // We souldn't go through the bottom of the play area
@@ -55,11 +57,21 @@ export const checkPawnCollision = (pawn, stage, {x: moveX, y: moveY}) => {
                 // stage[y + pawn.pos.y + moveY] [x + pawn.pos.x + moveX][1] !== 'empty' // Collision avec les blocs
                 ) 
                 {
-                    // console.log("Collision detected")
-                    return {collision:true, mur:true}
+                    // console.log("Collision detected avec un mur")
+                    res.collision = true
+                    res.mur = true 
+                    // return {collision:true, mur:true, pawn:false}
+                }
+                else if(stage[y + pawn.pos.y + moveY][x + pawn.pos.x + moveX][2]) // Collision avec un pion
+                {
+                    // console.log("collision avec un pion", stage[y + pawn.pos.y + moveY][x + pawn.pos.x + moveX][2])
+                    res.collision = true
+                    res.pawn = true
+                    // return {collision:true, mur:false, pawn: true}
                 }
             }
         }
     }
-    return {collision:false, mur:false}
+    // console.log(res)
+    return res
 }

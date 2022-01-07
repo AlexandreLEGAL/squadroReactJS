@@ -24,6 +24,7 @@ export const usePawn = ({color},{number}) => {
     }
 
     const resetPawn = () => {
+        console.log("reset to", PAWN[color][number].pos)
             setPawn({
                 pos:PAWN[color][number].pos,
                 pawn: PAWN[color].shape,
@@ -32,7 +33,6 @@ export const usePawn = ({color},{number}) => {
                 step: PAWN[color][number].step,
                 go:false
             })
-            // console.log(pawn.go)
         }
     return [pawn, updatePawnPos, resetPawn];
 }

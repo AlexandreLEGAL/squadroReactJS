@@ -25,6 +25,7 @@ const Squadro = () => {
     const [pawn2,   updatePawnPos2,     resetPawn2]   = usePawn({color:"B"}, {number:3})
     const [pawn3,   updatePawnPos3,     resetPawn3]   = usePawn({color:"B"}, {number:4})
     const [pawn4,   updatePawnPos4,     resetPawn4]   = usePawn({color:"B"}, {number:5})
+    
     const [pawn5,   updatePawnPos5,     resetPawn5]   = usePawn({color:"W"}, {number:1})
     const [pawn6,   updatePawnPos6,     resetPawn6]   = usePawn({color:"W"}, {number:2})
     const [pawn7,   updatePawnPos7,     resetPawn7]   = usePawn({color:"W"}, {number:3})
@@ -37,6 +38,7 @@ const Squadro = () => {
         [[pawn2, updatePawnPos2, resetPawn2]],
         [[pawn3, updatePawnPos3, resetPawn3]],
         [[pawn4, updatePawnPos4, resetPawn4]],
+
         [[pawn5, updatePawnPos5, resetPawn5]],
         [[pawn6, updatePawnPos6, resetPawn6]],
         [[pawn7, updatePawnPos7, resetPawn7]],
@@ -61,6 +63,61 @@ const Squadro = () => {
     //         updatePlayerPos({x: 0, y:dir})
     //     }
     // }
+    const bestStepPossible = (h, step, p, stage) => {
+        let i = step // Nombre de pas max possible
+        let possible = false // Pas de collision ?
+        let mv = {x: 0, y: 0}
+        while(i!==0 && !possible){ // On détermine le mouvement le plus grand possible
+            if(Math.sign(step) === 1){ // - si aller + si retour
+                i--
+            }
+            else{
+                i++
+            }
+
+            if(h){
+                mv.x = i
+            }
+            else{
+                mv.y = i
+            }
+            
+            possible = !checkPawnCollision(p, stage, mv).collision
+            // console.log("possible",i!==0 && !possible, i, !possible)
+            
+        }
+        
+        console.log("Meilleur mouvement possible pour se rapprocher au maximum", mv)
+        return [i, possible, mv]
+    }
+
+    const jumpPawns = (h, step, p, stage) => {
+        let i = step // Nombre de pas pour manger possible
+        let possible = false // Pas de collision ?
+        let mv = {x: 0, y: 0}
+        while(!possible){ // On détermine le mouvement le plus grand possible
+            if(Math.sign(step) === 1){ // - si aller + si retour
+                i++
+            }
+            else{
+                i--
+            }
+
+            if(h){
+                mv.x = i
+            }
+            else{
+                mv.y = i
+            }
+            
+            possible = !checkPawnCollision(p, stage, mv).collision
+            // console.log("possible",i!==0 && !possible, i, !possible)
+            
+        }
+        
+        console.log("Meilleur mouvement possible pour manger des pions", mv)
+        return [i, possible, mv]
+    }
 
     const moveVerticalyPawn = (step, direction, p, update) => {
         // console.log("p", p)
@@ -71,7 +128,50 @@ const Squadro = () => {
         else if (direction === "V"){
             mouvement = {x: 0, y: step}
         }
-        const collision = checkPawnCollision(p, stage, mouvement)
+
+        let col = false
+        let turnStep
+        if(Math.sign(step) === 1){ // - si aller + si retour
+            let k = 1
+            while(k <= step && !col){
+                
+                if(direction === "H") {
+                    mouvement = {x: k, y: 0}
+                }
+                else if (direction === "V"){
+                    mouvement = {x: 0, y: k}
+                }
+                if(checkPawnCollision(p, stage, mouvement).collision){
+                    col = checkPawnCollision(p, stage, mouvement)
+                }
+                // console.log("+ col = ",k,col)
+                k++
+                
+            }
+            turnStep = --k
+            // console.log(turnStep)
+        }
+        else{
+            let k = -1
+            while(k >= step && !col){
+                if(direction === "H") {
+                    mouvement = {x: k, y: 0}
+                }
+                else if (direction === "V"){
+                    mouvement = {x: 0, y: k}
+                }
+                if(checkPawnCollision(p, stage, mouvement).collision){
+                    col = checkPawnCollision(p, stage, mouvement)
+                }
+                // console.log("- col = ",k,col)
+                k--
+            }
+            turnStep = ++k
+            console.log(turnStep)
+        }
+        // console.log("col", col)
+        const collision = col
+        // const collision = checkPawnCollision(p, stage, mouvement)
         // if(JSON.stringify(pawn.pos) === JSON.stringify(player.pos)){
             if(!collision.collision){
                 // console.log("if")
@@ -89,33 +189,11 @@ const Squadro = () => {
                         mouvement = {x: 0, y: step}
                     }
 
-                    let i = step // Nombre de pas max possible
-                    let possible = false // Pas de collision ?
-                    let mv = {x: 0, y: 0}
-                    while(i!==0 && !possible){ // On détermine le mouvement le plus grand possible
-                        if(Math.sign(step) === 1){ // - si aller + si retour
-                            i--
-                        }
-                        else{
-                            i++
-                        }
+                    const [i, possible, mv] = bestStepPossible(h, step, p, stage)
 
-                        if(h){
-                            mv.x = i
-                        }
-                        else{
-                            mv.y = i
-                        }
-                        
-                        possible = !checkPawnCollision(p, stage, mv).mur
-                        // console.log("possible",i!==0 && !possible, i, !possible)
-                        
-                    }
-                    {
-                    if(i !== 0)
+                    if(i !== 0){ // Si on est pas au bord du stage
                         mouvement = mv
                     }
-                    console.log("Meilleur mouvement possible pour se rapprocher au maximum", mv)
 
                     if(Math.sign(step) === 1){ // SI c'est un aller 
                         if( i === 0){ // Et qu'on est au bord du stage
@@ -126,31 +204,35 @@ const Squadro = () => {
                             else{
                                 mouvement = {x: mouvement.x, y: -(4-mouvement.y)} 
                             }
-                            // console.log("avant",pawn.go)
-                            // moveVerticalyPawn(step, direction)
+
                             step = -(4-step) // On se retourne
                             p.go = !p.go
-                            // updatePawnPos({x: mouvementInverted.x, y:mouvementInverted.y, step:, go:!pawn.go})
-                            // console.log("après",pawn.go)
+
+                            moveVerticalyPawn(step, direction, p, update)
                         }
-                        update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
                     }
                     else if (Math.sign(step) === -1 && possible === true){ // Si on arrive vers un mur et que c'est le retour alors on marque 1 point
-                        // console.log("Marque 1 point !")
+                        console.log("Marque 1 point !")
                         update({x: mv.x, y:mv.y, step: step, go:p.go})
                     }
                 }
-                // console.log("else")
-                // console.log("step",step)
-                // console.log("!pawn.go", !pawn.go)
-                 
-            // }
+                else if(collision.pawn){ // Collision avec un pion
+                    console.log("Collision avec un pion")
+                    const h = direction === "H"
+
+                    const [i, possible, mv] = jumpPawns(h, turnStep, p, stage)
+
+                    if(i !== 0){ // Si on est pas au bord du stage
+                        mouvement = mv
+                    }
+
+                    update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
+                }
         }
         const nextpos = {x: p.pos.x + mouvement.x, y: p.pos.y + mouvement.y}
         if(JSON.stringify(nextpos) === JSON.stringify({x:0, y:0}) && p.go === false){
             console.log("Marque 1 point !")
         }
-        // console.log(pawn)
     }
     const resetPawns = () => {
         resetPawn()
