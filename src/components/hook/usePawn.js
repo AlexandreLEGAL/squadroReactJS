@@ -12,6 +12,7 @@ export const usePawn = ({color},{number}) => {
         
     })
     const updatePawnPos = ({x,y,collided, step, go}) => {
+        console.log("upd to", PAWN[color][number].pos)
         setPawn(prev => ({
             ...prev,
             pos: {x:(prev.pos.x += x/2), y:(prev.pos.y += y/2)},
@@ -20,6 +21,7 @@ export const usePawn = ({color},{number}) => {
             step,
             go
         }))
+        console.log("upd to", PAWN[color][number].pos)
         // console.log(go)
     }
 

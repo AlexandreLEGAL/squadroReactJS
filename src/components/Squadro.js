@@ -120,7 +120,6 @@ const Squadro = () => {
     }
 
     const moveVerticalyPawn = (step, direction, p, update) => {
-        // console.log("p", p)
         let mouvement
         if(direction === "H") {
             mouvement = {x: step, y: 0}
@@ -144,12 +143,11 @@ const Squadro = () => {
                 if(checkPawnCollision(p, stage, mouvement).collision){
                     col = checkPawnCollision(p, stage, mouvement)
                 }
-                // console.log("+ col = ",k,col)
                 k++
                 
             }
             turnStep = --k
-            // console.log(turnStep)
+            console.log(turnStep)
         }
         else{
             let k = -1
@@ -163,16 +161,14 @@ const Squadro = () => {
                 if(checkPawnCollision(p, stage, mouvement).collision){
                     col = checkPawnCollision(p, stage, mouvement)
                 }
-                // console.log("- col = ",k,col)
                 k--
             }
             turnStep = ++k
             console.log(turnStep)
         }
-        // console.log("col", col)
+        console.log("col", col)
         const collision = col
-        // const collision = checkPawnCollision(p, stage, mouvement)
-        // if(JSON.stringify(pawn.pos) === JSON.stringify(player.pos)){
+
             if(!collision.collision){
                 // console.log("if")
                 update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
@@ -204,12 +200,15 @@ const Squadro = () => {
                             else{
                                 mouvement = {x: mouvement.x, y: -(4-mouvement.y)} 
                             }
-
                             step = -(4-step) // On se retourne
                             p.go = !p.go
 
                             moveVerticalyPawn(step, direction, p, update)
                         }
+                        else{
+                            update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
+                        }
+
                     }
                     else if (Math.sign(step) === -1 && possible === true){ // Si on arrive vers un mur et que c'est le retour alors on marque 1 point
                         console.log("Marque 1 point !")
