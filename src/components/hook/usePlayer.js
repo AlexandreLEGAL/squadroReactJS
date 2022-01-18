@@ -3,29 +3,27 @@ import { squadroPiece } from "../../squadro";
 
 export const usePlayer = () => {
     const [player, setPlayer] = useState({
-        pos: {x: 0, y:0},
-        squadro: squadroPiece().shape,
-        collided: false
+        score: 0,
+        turn: false
     })
 
-    const updatePlayerPos = ({x,y,collided}) => {
+    const updatePlayer = (newScore, newTurn) => {
         setPlayer(prev => ({
             ...prev,
-            pos: {x:(prev.pos.x += x/2), y:(prev.pos.y += y/2)},
-            collided,
+            score: prev.score += newScore/2,
+            turn: newTurn
         }))
     }
 
     const resetPlayer = useCallback(
         () => {
             setPlayer({
-                pos:{x: 0, y: 0},
-                squadro: squadroPiece().shape,
-                collided: false,
+                score: 0,
+                turn: false
             })
         },
         [],
     )
-    return[player, updatePlayerPos, resetPlayer]
+    return[player, updatePlayer, resetPlayer]
 }
     

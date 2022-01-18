@@ -1,24 +1,26 @@
 import react, {useState} from 'react';
 
-import { createStage, checkPlayerCollision, checkPawnCollision } from '../gameHelpers';
+import { createStage, checkPawnCollision } from '../gameHelpers';
 //Components
 import Stage from './Stage';
 import Display from './Display';
 import Start from './Start';
 //Styled componnents
 import { StyledSquadro, StyledSquadroWrapper } from './styles/StyledSquadro';
+import { PAWN } from "../squadro";
 
 //Custom Hooks
 
-// import {usePlayer} from './hook/usePlayer';
-import {useStage} from './hook/useStage';
+import { usePlayer } from './hook/usePlayer';
+import { useStage } from './hook/useStage';
 import { usePawn } from './hook/usePawn';
 
 const Squadro = () => {
-    const [turnTime, setTurnTime] = useState(null)
+    // const [turnTime, setTurnTime] = useState(null)
     const [gameOver, setGameOver] = useState(false)
 
-    // const [player, updatePlayerPos, resetPlayer] = usePlayer()
+    const [playerB, updatePlayerB, resetPlayerB] = usePlayer()
+    const [playerW, updatePlayerW, resetPlayerW] = usePlayer()
 
     const [pawn,    updatePawnPos,      resetPawn,      goBack]    = usePawn({color:"B"}, {number:1}) // Couleur, numero
     const [pawn1,   updatePawnPos1,     resetPawn1,     goBack1]   = usePawn({color:"B"}, {number:2})
@@ -224,6 +226,7 @@ const Squadro = () => {
 
                     }
                     else if (Math.sign(step) === -1 && possible === true){ // Si on arrive vers un mur et que c'est le retour alors on marque 1 point
+                        updatePlayerB(1, false)
                         console.log("Marque 1 point !")
                         update({x: mv.x, y:mv.y, step: step, go:p.go})
                     }
@@ -242,8 +245,19 @@ const Squadro = () => {
                 }
         }
         const nextpos = {x: p.pos.x + mouvement.x, y: p.pos.y + mouvement.y}
-        if(JSON.stringify(nextpos) === JSON.stringify({x:0, y:0}) && p.go === false){
+        if(JSON.stringify(nextpos) === JSON.stringify(PAWN[p.color][p.number].pos) && p.go === false){
+            if(p.color === "W"){
+                updatePlayerW(1, false)
+            }
+            else{
+                updatePlayerB(1, false)
+            }
             console.log("Marque 1 point !")
+            if(playerB.score === 4 || playerW === 4){
+                setGameOver(true)
+                console.log("etron")
+            }
+            console.log("gameover",gameOver, playerB.score, playerW.score)
         }
     }
     const resetPawns = () => {
@@ -263,7 +277,11 @@ const Squadro = () => {
         //Reset everything
         setStage(createStage())
         // resetPlayer()
+        resetPlayerB()
+        updatePlayerB(1, true)
+        resetPlayerW()
         resetPawns()
+        console.log(playerB, playerW)
     }
 
     return (  
@@ -276,9 +294,9 @@ const Squadro = () => {
                         : 
                     (
                     <div>
-                        <Display text="Turn" info={"player.squadro"}/>
-                        <Display text="Score joueur 1" info={"player1.score"}/>
-                        <Display text="Score joueur 2" info={"player2.score"}/>
+                        <Display text="Turn" info={playerB.turn}/>
+                        <Display text="Score joueur NOIR" info={playerB.score}/>
+                        <Display text="Score joueur BLANC" info={playerW.score}/>
                     </div>
                     )}
                     <Start callback={startGame}/>

@@ -9,6 +9,8 @@ export const usePawn = ({color},{number}) => {
         direction: PAWN[color].direction,
         step: PAWN[color][number].step,
         go: true,
+        color: color,
+        number: number
         
     })
     const updatePawnPos = ({x,y,collided, step, go}) => {
