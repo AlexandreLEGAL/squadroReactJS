@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/squadroReactJS/static/css/main.073c9b0a.css",
+    "main.js": "/squadroReactJS/static/js/main.0667fb16.js",
+    "static/js/787.af4d0cd0.chunk.js": "/squadroReactJS/static/js/787.af4d0cd0.chunk.js",
+    "index.html": "/squadroReactJS/index.html",
+    "main.073c9b0a.css.map": "/squadroReactJS/static/css/main.073c9b0a.css.map",
+    "main.0667fb16.js.map": "/squadroReactJS/static/js/main.0667fb16.js.map",
+    "787.af4d0cd0.chunk.js.map": "/squadroReactJS/static/js/787.af4d0cd0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.0667fb16.js"
+  ]
+}
