@@ -18,7 +18,7 @@ const Stage = (props) => {
             })
         }
         // console.log(props.pawns.forEach(elem => elem.find(e => JSON.stringify(e.pos) === JSON.stringify({x: x, y: y }))))
-        const res = <Cell pawns={props.pawns} i={i} moveVerticalyPawn={props.moveVerticalyPawn} key={x} type={cell[0]}  pawn={cell[2]}/>
+        const res = <Cell pawns={props.pawns} i={i} moveVerticalyPawn={props.moveVerticalyPawn} key={x} type={cell[0]}  pawn={cell[2]} currentUser={props.currentUser}/>
         // if(cell[2]){
         //     i++
         // }

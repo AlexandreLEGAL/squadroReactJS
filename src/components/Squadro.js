@@ -15,12 +15,14 @@ import { usePlayer } from './hook/usePlayer';
 import { useStage } from './hook/useStage';
 import { usePawn } from './hook/usePawn';
 
+let currentUser = true // true = B , false = W
+
 const Squadro = () => {
     // const [turnTime, setTurnTime] = useState(null)
-    const [gameOver, setGameOver] = useState(false)
+    const [gameOver, setGameOver] = useState(false)    
 
-    const [playerB, updatePlayerB, resetPlayerB] = usePlayer()
-    const [playerW, updatePlayerW, resetPlayerW] = usePlayer()
+    const [playerB, updatePlayerB, resetPlayerB] = usePlayer(true)
+    const [playerW, updatePlayerW, resetPlayerW] = usePlayer(false)
 
     const [pawn,    updatePawnPos,      resetPawn,      goBack]    = usePawn({color:"B"}, {number:1}) // Couleur, numero
     const [pawn1,   updatePawnPos1,     resetPawn1,     goBack1]   = usePawn({color:"B"}, {number:2})
@@ -53,6 +55,7 @@ const Squadro = () => {
         pawnPlayer1,
          createStage(), )
     console.log('re-render')
+    console.log("current user", currentUser)
 
     // const movePlayer = dir => {
     //     if(!checkPlayerCollision(player, stage, {x:dir, y:0})){
@@ -135,130 +138,141 @@ const Squadro = () => {
     }
 
     const moveVerticalyPawn = (step, direction, p, update) => {
-        let mouvement
-        if(direction === "H") {
-            mouvement = {x: step, y: 0}
-        }
-        else if (direction === "V"){
-            mouvement = {x: 0, y: step}
-        }
-
-        let col = false
-        let turnStep
-        if(Math.sign(step) === 1){ // - si aller + si retour
-            let k = 1
-            while(k <= step && !col){
-                
-                if(direction === "H") {
-                    mouvement = {x: k, y: 0}
-                }
-                else if (direction === "V"){
-                    mouvement = {x: 0, y: k}
-                }
-                if(checkPawnCollision(p, stage, mouvement).collision){
-                    col = checkPawnCollision(p, stage, mouvement)
-                }
-                k++
-                
+        // if(p.turn){ // player pas p
+            let mouvement
+            if(direction === "H") {
+                mouvement = {x: step, y: 0}
             }
-            turnStep = --k
-            // console.log(turnStep)
-        }
-        else{
-            let k = -1
-            while(k >= step && !col){
-                if(direction === "H") {
-                    mouvement = {x: k, y: 0}
-                }
-                else if (direction === "V"){
-                    mouvement = {x: 0, y: k}
-                }
-                if(checkPawnCollision(p, stage, mouvement).collision){
-                    col = checkPawnCollision(p, stage, mouvement)
-                }
-                k--
+            else if (direction === "V"){
+                mouvement = {x: 0, y: step}
             }
-            turnStep = ++k
-            // console.log(turnStep)
-        }
-        console.log("col", col)
-        const collision = col
 
-            if(!collision.collision){
-                // console.log("if")
-                update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
+            let col = false
+            let turnStep
+            if(Math.sign(step) === 1){ // - si aller + si retour
+                let k = 1
+                while(k <= step && !col){
+                    
+                    if(direction === "H") {
+                        mouvement = {x: k, y: 0}
+                    }
+                    else if (direction === "V"){
+                        mouvement = {x: 0, y: k}
+                    }
+                    if(checkPawnCollision(p, stage, mouvement).collision){
+                        col = checkPawnCollision(p, stage, mouvement)
+                    }
+                    k++
+                    
+                }
+                turnStep = --k
+                // console.log(turnStep)
             }
             else{
-                // SI c'est un mur aller le plus loin possible
-                if(collision.mur){ // Si une collision contre un mur est détecté on se rapproche au plus proche du mur
-                    console.log("Collision avec un mur")
-                    const h = direction === "H"
-                    if(h) {
-                        mouvement = {x: step, y: 0}
+                let k = -1
+                while(k >= step && !col){
+                    if(direction === "H") {
+                        mouvement = {x: k, y: 0}
                     }
-                    else{
-                        mouvement = {x: 0, y: step}
+                    else if (direction === "V"){
+                        mouvement = {x: 0, y: k}
                     }
-
-                    const [i, possible, mv] = bestStepPossible(h, step, p, stage)
-
-                    if(i !== 0){ // Si on est pas au bord du stage
-                        mouvement = mv
+                    if(checkPawnCollision(p, stage, mouvement).collision){
+                        col = checkPawnCollision(p, stage, mouvement)
                     }
+                    k--
+                }
+                turnStep = ++k
+                // console.log(turnStep)
+            }
+            console.log("col", col)
+            const collision = col
 
-                    if(Math.sign(step) === 1){ // SI c'est un aller 
-                        if( i === 0){ // Et qu'on est au bord du stage
-                            console.log("Bord du stage")
-                            if(h) {
-                                mouvement = {x: -(4-mouvement.x), y: mouvement.y} 
-                            }
-                            else{
-                                mouvement = {x: mouvement.x, y: -(4-mouvement.y)} 
-                            }
-                            step = -(4-step) // On se retourne
-                            p.go = !p.go
-
-                            moveVerticalyPawn(step, direction, p, update)
+                if(!collision.collision){
+                    // console.log("if")
+                    update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
+                    currentUser = !currentUser
+                }
+                else{
+                    // SI c'est un mur aller le plus loin possible
+                    if(collision.mur){ // Si une collision contre un mur est détecté on se rapproche au plus proche du mur
+                        console.log("Collision avec un mur")
+                        const h = direction === "H"
+                        if(h) {
+                            mouvement = {x: step, y: 0}
                         }
                         else{
-                            update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
+                            mouvement = {x: 0, y: step}
                         }
 
+                        const [i, possible, mv] = bestStepPossible(h, step, p, stage)
+
+                        if(i !== 0){ // Si on est pas au bord du stage
+                            mouvement = mv
+                        }
+
+                        if(Math.sign(step) === 1){ // SI c'est un aller 
+                            if( i === 0){ // Et qu'on est au bord du stage
+                                console.log("Bord du stage")
+                                if(h) {
+                                    mouvement = {x: -(4-mouvement.x), y: mouvement.y} 
+                                }
+                                else{
+                                    mouvement = {x: mouvement.x, y: -(4-mouvement.y)} 
+                                }
+                                step = -(4-step) // On se retourne
+                                p.go = !p.go
+
+                                moveVerticalyPawn(step, direction, p, update)
+                            }
+                            else{
+                                update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
+                                currentUser = !currentUser
+                            }
+
+                        }
+                        else if (Math.sign(step) === -1 && possible === true){ // Si on arrive vers un mur et que c'est le retour alors on marque 1 point
+                            updatePlayerB(1, false)
+                            console.log("Marque 1 point !")
+                            update({x: mv.x, y:mv.y, step: step, go:p.go})
+                            currentUser = !currentUser
+                        }
                     }
-                    else if (Math.sign(step) === -1 && possible === true){ // Si on arrive vers un mur et que c'est le retour alors on marque 1 point
-                        updatePlayerB(1, false)
-                        console.log("Marque 1 point !")
-                        update({x: mv.x, y:mv.y, step: step, go:p.go})
+                    else if(collision.pawn){ // Collision avec un pion
+                        console.log("Collision avec un pion")
+                        const h = direction === "H"
+
+                        const [i, possible, mv] = jumpPawns(h, turnStep, p, stage)
+
+                        if(i !== 0){ // Si on est pas au bord du stage
+                            mouvement = mv
+                        }
+
+                        update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
+                        currentUser = !currentUser
                     }
+            }
+            const nextpos = {x: p.pos.x + mouvement.x, y: p.pos.y + mouvement.y}
+            if(JSON.stringify(nextpos) === JSON.stringify(PAWN[p.color][p.number].pos) && p.go === false){
+                if(p.color === "W"){
+                    updatePlayerW(1, false)
+                    playerW.end = true
                 }
-                else if(collision.pawn){ // Collision avec un pion
-                    console.log("Collision avec un pion")
-                    const h = direction === "H"
-
-                    const [i, possible, mv] = jumpPawns(h, turnStep, p, stage)
-
-                    if(i !== 0){ // Si on est pas au bord du stage
-                        mouvement = mv
-                    }
-
-                    update({x: mouvement.x, y:mouvement.y, step: step, go:p.go})
+                else{
+                    updatePlayerB(1, false)
+                    playerB.end = true
                 }
-        }
-        const nextpos = {x: p.pos.x + mouvement.x, y: p.pos.y + mouvement.y}
-        if(JSON.stringify(nextpos) === JSON.stringify(PAWN[p.color][p.number].pos) && p.go === false){
-            if(p.color === "W"){
-                updatePlayerW(1, false)
+                console.log("Marque 1 point !")
+                if(playerB.score === 4 || playerW === 4){
+                    setGameOver(true)
+                    console.log("etron")
+                }
+                console.log("gameover",gameOver, playerB.score, playerW.score)
             }
-            else{
-                updatePlayerB(1, false)
-            }
-            console.log("Marque 1 point !")
-            if(playerB.score === 4 || playerW === 4){
-                setGameOver(true)
-                console.log("etron")
-            }
-            console.log("gameover",gameOver, playerB.score, playerW.score)
-        }
+        // }
+        // else{
+        //     console.log("Ce n'est pas le tours de ce joueur")
+        // }
     }
     const resetPawns = () => {
         resetPawn()
@@ -278,7 +292,7 @@ const Squadro = () => {
         setStage(createStage())
         // resetPlayer()
         resetPlayerB()
-        updatePlayerB(1, true)
+        updatePlayerB(0, true)
         resetPlayerW()
         resetPawns()
         console.log(playerB, playerW)
@@ -287,14 +301,14 @@ const Squadro = () => {
     return (  
         <StyledSquadroWrapper role="button" tabIndex={0}>
             <StyledSquadro>
-                <Stage stage={stage} pawns={pawnPlayer1} moveVerticalyPawn={moveVerticalyPawn}/>
+                <Stage stage={stage} pawns={pawnPlayer1} moveVerticalyPawn={moveVerticalyPawn} currentUser={currentUser}/>
                 <aside>
                     {gameOver ? (
                         <Display gameOver={gameOver} text="Game Over"/>)
                         : 
                     (
                     <div>
-                        <Display text="Turn" info={playerB.turn}/>
+                        <Display text="Turn" info={currentUser ? "Black" : "White" }/>
                         <Display text="Score joueur NOIR" info={playerB.score}/>
                         <Display text="Score joueur BLANC" info={playerW.score}/>
                     </div>

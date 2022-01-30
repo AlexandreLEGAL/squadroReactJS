@@ -10,7 +10,8 @@ export const usePawn = ({color},{number}) => {
         step: PAWN[color][number].step,
         go: true,
         color: color,
-        number: number
+        number: number,
+        end: false
         
     })
     const updatePawnPos = ({x,y,collided, step, go}) => {
@@ -20,7 +21,8 @@ export const usePawn = ({color},{number}) => {
             collided,
             direction: PAWN[color].direction,
             step,
-            go: go
+            go: go,
+            end: false
         }))
     }
 
@@ -31,7 +33,8 @@ export const usePawn = ({color},{number}) => {
                 collided: false,
                 direction: PAWN[color].direction,
                 step: PAWN[color][number].step,
-                go:false
+                go:false,
+                end: false
             })
         }
     const goBack = () => {

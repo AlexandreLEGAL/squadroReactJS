@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
 import { squadroPiece } from "../../squadro";
 
-export const usePlayer = () => {
+export const usePlayer = (nextToPlay) => {
     const [player, setPlayer] = useState({
         score: 0,
-        turn: false
+        turn: nextToPlay
     })
 
     const updatePlayer = (newScore, newTurn) => {
@@ -19,7 +19,7 @@ export const usePlayer = () => {
         () => {
             setPlayer({
                 score: 0,
-                turn: false
+                turn: nextToPlay
             })
         },
         [],
